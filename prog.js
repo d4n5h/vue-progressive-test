@@ -82,6 +82,8 @@ function prog(anchor) {
                         case 'P-IMG':
                             e = document.createElement('img');
                             e = this.cloneAttributes(t, e)
+                            e.setAttribute('src',t.innerHTML.trim())
+                            t.innerHTML = ''
                             t.appendChild(e)
                             break;
                         case 'P-LINK':
@@ -96,7 +98,7 @@ function prog(anchor) {
                             body.appendChild(e)
                             break;
                         case 'P-CONTENT':
-                            const src = t.getAttribute('src');
+                            const src = t.innerHTML.trim()
                             if (src) {
                                 fetch(src)
                                     .then(response => response.text())

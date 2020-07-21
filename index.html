@@ -10,7 +10,8 @@
                 el: '#app',
                 data: {
                     m1: "This is reactive",
-                    items:[1,2,3,4]
+                    items: ['http://localhost:9001', 'http://localhost:9001', 'http://localhost:9001', 'http://localhost:9001'],
+                    images: ['https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg']
                 },
                 methods: {
                     test: function (e) {
@@ -26,7 +27,7 @@
     <div id="app">
         <custom-element></custom-element>
         <!-- Progressive load css -->
-        <p-link rel="stylesheet" href="./style1.css"></p-link>
+        <p-link rel="stylesheet" href="./style1.css" p-in="console.log('Loaded style1.css')"></p-link>
 
         <div class="prog test test2" p-in="vm.test('In')" p-out="vm.test('Out')" p-active="true"
             style="background-color:#cacaca;height:2000px;">
@@ -36,15 +37,15 @@
         </div>
 
         <!-- Progressive load css -->
-        <p-link rel="stylesheet" href="./style2.css"></p-link>
+        <p-link rel="stylesheet" href="./style2.css" p-in="console.log('Loaded style2.css')"></p-link>
         <div class="test test2" style="background-color:#3d3d3d;color:#ffffff;font-family:Sofia;height:2000px;">
             <div v-for="(item, idx) in items" :key="idx">
-                <p-content src="http://localhost:9001/fetchContent">Placeholder until loaded...</p-content>
+                {{idx}} - <p-content>{{item}}/{{idx}}</p-content>
             </div>
         </div>
 
         <!-- Progressive load css -->
-        <p-link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"></p-link>
+        <p-link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia" p-in="console.log('Loaded font')"></p-link>
 
         <!-- Progressive load script -->
         <p-script>
@@ -54,9 +55,9 @@
         <p-script src="./test.js"></p-script>
 
         <!-- Progressive load image -->
-        <p-img style="width: 100%;height:900px;"
-            src="https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg" />
-        </p-img>
+        <div v-for="(item, idx) in images" :key="idx">
+            <p-img style="width: 100%;height:900px;" />{{item}}</p-img>
+        </div>
 
     </div>
     <script src="./prog.js"></script>
