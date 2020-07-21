@@ -3,22 +3,81 @@
 <head>
     <title>Test Progressive Loading</title>
     <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script src="./prog.js"></script>
     <script>
         // when life is settled, load up the fun stuff
+        // https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg
         document.addEventListener('DOMContentLoaded', function () {
             window.vm = new Vue({
                 el: '#app',
                 data: {
                     m1: "This is reactive",
-                    items: ['http://localhost:9001', 'http://localhost:9001', 'http://localhost:9001', 'http://localhost:9001'],
-                    images: ['https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg']
+                    items: [1, 2, 3, 4],
+                    images: [
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                        'https://picsum.photos/200/300?random=',
+                    ]
                 },
                 methods: {
                     test: function (e) {
                         this.$set(this, 'm1', e)
+                    },
+                    addItem: function () {
+                        this.items.push(this.items.length)
                     }
+                },
+                updated() {
+                    this.$nextTick(() => {
+                        window.pm.observer.observe(this.$refs.content[this.$refs.content.length - 1].children[0])
+                    })
                 }
             })
+            window.pm = prog()
         })
     </script>
 </head>
@@ -37,16 +96,20 @@
         </div>
 
         <!-- Progressive load css -->
-        <p-link rel="stylesheet" href="./style2.css" p-in="console.log('Loaded style2.css')"></p-link>
+        <p-link rel="stylesheet" href="./style2.css" p-in="console.log('Loaded style2.css')" v-if="true"></p-link>
         <div class="test test2" style="background-color:#3d3d3d;color:#ffffff;font-family:Sofia;height:2000px;">
-            <div v-for="(item, idx) in items" :key="idx">
-                {{idx}} - <p-content>{{item}}/{{idx}}</p-content>
+            <div v-for="(item, idx) in items" :key="idx" ref="content">
+                {{idx}} - <p-content placeholder="Loading..." retry="1">http://localhost:9001/{{item}}</p-content>
             </div>
         </div>
 
-        <!-- Progressive load css -->
-        <p-link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia" p-in="console.log('Loaded font')"></p-link>
+        <!-- Progressive load css (Google fonts) -->
+        <p-link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia" p-in="console.log('Loaded font')">
+        </p-link>
 
+        <!-- Trigger Vue -->
+        <div class="prog" p-in="vm.addItem()" p-active="true" style="font-family:Sofia;text-align: center;">Viewing this will add more content to the div above</div>
+        
         <!-- Progressive load script -->
         <p-script>
             console.log('TEST');
@@ -56,11 +119,13 @@
 
         <!-- Progressive load image -->
         <div v-for="(item, idx) in images" :key="idx">
-            <p-img style="width: 100%;height:900px;" />{{item}}</p-img>
+            <p-img style="width: 200px;height:200px;float:left" placeholder="./placeholder.jpg" placeholder-style="filter: blur(5px);">{{item}}{{idx}}</p-img>
         </div>
 
     </div>
-    <script src="./prog.js"></script>
+    <script>
+
+    </script>
 </body>
 
 </html>
